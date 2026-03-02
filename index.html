@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pricing — Plans & Calculator</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -22,6 +23,10 @@
     --scale: #a78bfa;
     --scale-glow: rgba(167,139,250,0.15);
     --accent: #4ade80;
+
+    /* Font tokens */
+    --font-display: 'Manrope', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
   }
 
   html { scroll-behavior: smooth; }
@@ -29,10 +34,13 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.6;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 1.65;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* BG texture */
@@ -56,9 +64,9 @@
     background: rgba(74,222,128,0.1);
     border: 1px solid rgba(74,222,128,0.3);
     color: var(--launch);
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
     padding: 6px 16px;
@@ -66,11 +74,11 @@
     margin-bottom: 24px;
   }
   header h1 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: clamp(42px, 7vw, 80px);
     font-weight: 800;
     line-height: 1.0;
-    letter-spacing: -2px;
+    letter-spacing: -2.5px;
     margin-bottom: 18px;
   }
   header h1 span { 
@@ -81,7 +89,10 @@
   }
   header p {
     color: var(--muted);
+    font-family: var(--font-body);
     font-size: 17px;
+    font-weight: 400;
+    line-height: 1.7;
     max-width: 480px;
     margin: 0 auto 40px;
   }
@@ -102,9 +113,9 @@
     border: none;
     background: transparent;
     color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
+    font-family: var(--font-display);
+    font-size: 13.5px;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.25s;
     position: relative;
@@ -119,6 +130,7 @@
     right: -6px;
     background: var(--grow);
     color: white;
+    font-family: var(--font-display);
     font-size: 9px;
     font-weight: 700;
     padding: 2px 6px;
@@ -158,7 +170,7 @@
     transform: translateX(-50%);
     background: var(--grow);
     color: white;
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1.5px;
@@ -173,8 +185,8 @@
   .scale .plan-accent { background: var(--scale); }
 
   .plan-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
+    font-family: var(--font-display);
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -186,19 +198,24 @@
 
   .plan-tagline {
     color: var(--muted);
-    font-size: 13px;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 400;
+    line-height: 1.6;
     margin-bottom: 24px;
   }
 
   .price-block { margin-bottom: 28px; }
   .price-block .amount {
-    font-family: 'Syne', sans-serif;
-    font-size: 48px;
+    font-family: var(--font-display);
+    font-size: 52px;
     font-weight: 800;
     line-height: 1;
-    letter-spacing: -2px;
+    letter-spacing: -3px;
+    font-variant-numeric: tabular-nums;
   }
   .price-block .currency {
+    font-family: var(--font-display);
     font-size: 20px;
     font-weight: 600;
     vertical-align: top;
@@ -208,10 +225,12 @@
   }
   .price-block .period {
     color: var(--muted);
+    font-family: var(--font-body);
     font-size: 13px;
     margin-top: 4px;
   }
   .price-block .yearly-note {
+    font-family: var(--font-body);
     font-size: 12px;
     margin-top: 4px;
     color: var(--muted);
@@ -223,8 +242,8 @@
   .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
 
   .features-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
+    font-family: var(--font-display);
+    font-size: 10px;
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
@@ -237,8 +256,11 @@
     display: flex;
     align-items: flex-start;
     gap: 10px;
+    font-family: var(--font-body);
     font-size: 13.5px;
-    color: rgba(240,240,245,0.8);
+    font-weight: 400;
+    color: rgba(240,240,245,0.85);
+    line-height: 1.5;
   }
   .feature-list li .icon {
     width: 16px;
@@ -260,10 +282,10 @@
     padding: 14px;
     border-radius: 12px;
     border: none;
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 14px;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
     cursor: pointer;
     transition: all 0.2s;
   }
@@ -277,13 +299,19 @@
   /* Addons section */
   .section-header { text-align: center; margin-bottom: 40px; }
   .section-header h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 36px;
     font-weight: 800;
-    letter-spacing: -1px;
+    letter-spacing: -1.5px;
     margin-bottom: 10px;
   }
-  .section-header p { color: var(--muted); font-size: 15px; }
+  .section-header p {
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.7;
+  }
 
   .addons-grid {
     display: grid;
@@ -299,10 +327,11 @@
     padding: 24px;
   }
   .addon-card h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 15px;
     font-weight: 700;
     margin-bottom: 12px;
+    letter-spacing: -0.3px;
   }
 
   .addon-row {
@@ -311,6 +340,7 @@
     align-items: center;
     padding: 8px 0;
     border-bottom: 1px solid var(--border);
+    font-family: var(--font-body);
     font-size: 13px;
   }
   .addon-row:last-child { border-bottom: none; }
@@ -341,13 +371,18 @@
 
   .calc-header { margin-bottom: 36px; }
   .calc-header h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 32px;
     font-weight: 800;
-    letter-spacing: -1px;
+    letter-spacing: -1.5px;
     margin-bottom: 8px;
   }
-  .calc-header p { color: var(--muted); font-size: 14px; }
+  .calc-header p {
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+  }
 
   .calc-body { display: grid; grid-template-columns: 1fr 340px; gap: 40px; }
 
@@ -363,8 +398,8 @@
     border: 1px solid var(--border);
     background: transparent;
     color: var(--muted);
-    font-family: 'Syne', sans-serif;
-    font-size: 12px;
+    font-family: var(--font-display);
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -378,11 +413,12 @@
   .calc-group { margin-bottom: 24px; }
   .calc-group label {
     display: block;
-    font-size: 12px;
-    font-weight: 500;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
     color: var(--muted);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
     margin-bottom: 10px;
   }
 
@@ -401,11 +437,11 @@
     border: none;
     background: transparent;
     color: var(--muted);
+    font-family: var(--font-body);
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
-    font-family: 'DM Sans', sans-serif;
   }
   .calc-billing-btn.active { background: var(--text); color: var(--bg); }
 
@@ -436,9 +472,10 @@
   .stepper-val {
     min-width: 48px;
     text-align: center;
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: 15px;
+    font-variant-numeric: tabular-nums;
     color: var(--text);
     border-left: 1px solid var(--border);
     border-right: 1px solid var(--border);
@@ -455,8 +492,10 @@
     align-items: center;
     gap: 10px;
     cursor: pointer;
+    font-family: var(--font-body);
     font-size: 13.5px;
-    color: rgba(240,240,245,0.8);
+    font-weight: 400;
+    color: rgba(240,240,245,0.85);
     padding: 8px 12px;
     border-radius: 8px;
     border: 1px solid transparent;
@@ -477,7 +516,13 @@
     font-size: 10px;
   }
   .calc-check.checked .check-box { border-color: var(--accent); background: var(--accent); color: var(--bg); }
-  .check-price { margin-left: auto; color: var(--muted); font-size: 12px; }
+  .check-price {
+    margin-left: auto;
+    color: var(--muted);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+  }
 
   /* Result panel */
   .result-panel {
@@ -490,10 +535,10 @@
     top: 24px;
   }
   .result-panel h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
+    font-family: var(--font-display);
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
     color: var(--muted);
     margin-bottom: 20px;
@@ -504,6 +549,7 @@
     justify-content: space-between;
     align-items: flex-start;
     padding: 8px 0;
+    font-family: var(--font-body);
     font-size: 13px;
     border-bottom: 1px solid var(--border);
   }
@@ -516,21 +562,36 @@
     padding-top: 20px;
     border-top: 2px solid var(--border);
   }
-  .result-total-label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-  .result-total-amount {
-    font-family: 'Syne', sans-serif;
-    font-size: 42px;
-    font-weight: 800;
-    letter-spacing: -2px;
-    line-height: 1;
+  .result-total-label {
+    color: var(--muted);
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 4px;
   }
-  .result-total-per { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .result-total-amount {
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: -2.5px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .result-total-per {
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 13px;
+    margin-top: 4px;
+  }
   .result-saving {
     margin-top: 12px;
     padding: 10px 14px;
     background: rgba(74,222,128,0.08);
     border: 1px solid rgba(74,222,128,0.2);
     border-radius: 10px;
+    font-family: var(--font-body);
     font-size: 12px;
     color: var(--launch);
     display: none;
@@ -561,7 +622,7 @@
   .module-card.academy::before { background: linear-gradient(90deg, #4ade80, transparent); }
   .module-card.payroll::before { background: linear-gradient(90deg, #a78bfa, transparent); }
   .module-tag {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1.5px;
@@ -570,25 +631,38 @@
     margin-bottom: 10px;
   }
   .module-card h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 20px;
     font-weight: 700;
+    letter-spacing: -0.5px;
     margin-bottom: 8px;
   }
-  .module-card p { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .module-card p {
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
   .module-price {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 28px;
     font-weight: 800;
     letter-spacing: -1px;
   }
-  .module-price span { font-size: 14px; color: var(--muted); font-weight: 400; }
+  .module-price span {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 400;
+  }
 
   /* Comparison Table */
   .compare-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 80px;
+    font-family: var(--font-body);
   }
   .compare-table th, .compare-table td {
     padding: 14px 20px;
@@ -597,8 +671,8 @@
     border-bottom: 1px solid var(--border);
   }
   .compare-table th {
-    font-family: 'Syne', sans-serif;
-    font-size: 12px;
+    font-family: var(--font-display);
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
@@ -618,7 +692,7 @@
     .calc-body { grid-template-columns: 1fr; }
     .addons-grid, .modules-grid { grid-template-columns: 1fr; }
     .result-panel { position: static; }
-    header h1 { font-size: 36px; }
+    header h1 { font-size: 36px; letter-spacing: -1.5px; }
     .calculator-section { padding: 28px 20px; }
   }
 
@@ -639,6 +713,7 @@
     border: 1px solid var(--border);
     border-radius: 100px;
     padding: 3px 10px;
+    font-family: var(--font-body);
     font-size: 11px;
     color: var(--muted);
     margin-bottom: 6px;
