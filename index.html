@@ -10,6 +10,28 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
+    /* Light mode (default) */
+    --bg: #ffffff;
+    --surface: #f8f9fa;
+    --surface2: #f0f1f3;
+    --border: rgba(0,0,0,0.08);
+    --text: #1a1a1a;
+    --muted: #6b6b7b;
+    --launch: #22c55e;
+    --launch-glow: rgba(34,197,94,0.1);
+    --grow: #f97316;
+    --grow-glow: rgba(249,115,22,0.1);
+    --scale: #8b5cf6;
+    --scale-glow: rgba(139,92,246,0.1);
+    --accent: #22c55e;
+
+    /* Font tokens */
+    --font-display: 'Manrope', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  /* Dark mode */
+  [data-theme="dark"] {
     --bg: #0a0a0f;
     --surface: #111118;
     --surface2: #18181f;
@@ -23,10 +45,6 @@
     --scale: #a78bfa;
     --scale-glow: rgba(167,139,250,0.15);
     --accent: #4ade80;
-
-    /* Font tokens */
-    --font-display: 'Manrope', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
   }
 
   html { scroll-behavior: smooth; }
@@ -49,13 +67,46 @@
     position: fixed;
     inset: 0;
     background: 
-      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(74,222,128,0.05) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(167,139,250,0.06) 0%, transparent 60%);
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(34,197,94,0.03) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(139,92,246,0.04) 0%, transparent 60%);
     pointer-events: none;
     z-index: 0;
   }
 
+  [data-theme="dark"] body::before {
+    background: 
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(74,222,128,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(167,139,250,0.06) 0%, transparent 60%);
+  }
+
   .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* Theme Toggle */
+  .theme-toggle {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 100;
+  }
+  .theme-toggle-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .theme-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
 
   /* Header */
   header { padding: 80px 0 60px; text-align: center; }
@@ -159,8 +210,11 @@
 
   .plan-card.featured {
     border-color: rgba(251,146,60,0.4);
+    background: var(--surface);
+    box-shadow: 0 0 40px rgba(251,146,60,0.12), inset 0 1px 0 rgba(251,146,60,0.15);
+  }
+  [data-theme="dark"] .plan-card.featured {
     background: linear-gradient(160deg, #18181f 0%, #1a1510 100%);
-    box-shadow: 0 0 60px rgba(251,146,60,0.08), inset 0 1px 0 rgba(251,146,60,0.1);
   }
   .plan-card.featured::before {
     content: 'MOST POPULAR';
@@ -259,7 +313,7 @@
     font-family: var(--font-body);
     font-size: 13.5px;
     font-weight: 400;
-    color: rgba(240,240,245,0.85);
+    color: var(--text);
     line-height: 1.5;
   }
   .feature-list li .icon {
@@ -289,11 +343,11 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .launch .cta-btn { background: var(--launch-glow); color: var(--launch); border: 1px solid rgba(74,222,128,0.3); }
-  .launch .cta-btn:hover { background: var(--launch); color: var(--bg); }
+  .launch .cta-btn { background: var(--launch-glow); color: var(--launch); border: 1px solid var(--launch); }
+  .launch .cta-btn:hover { background: var(--launch); color: white; }
   .grow .cta-btn { background: var(--grow); color: white; }
-  .grow .cta-btn:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(251,146,60,0.3); }
-  .scale .cta-btn { background: var(--scale-glow); color: var(--scale); border: 1px solid rgba(167,139,250,0.3); }
+  .grow .cta-btn:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 8px 24px var(--grow-glow); }
+  .scale .cta-btn { background: var(--scale-glow); color: var(--scale); border: 1px solid var(--scale); }
   .scale .cta-btn:hover { background: var(--scale); color: white; }
 
   /* Addons section */
@@ -468,7 +522,7 @@
     align-items: center;
     justify-content: center;
   }
-  .stepper-btn:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+  .stepper-btn:hover { background: var(--surface); color: var(--text); }
   .stepper-val {
     min-width: 48px;
     text-align: center;
@@ -495,19 +549,19 @@
     font-family: var(--font-body);
     font-size: 13.5px;
     font-weight: 400;
-    color: rgba(240,240,245,0.85);
+    color: var(--text);
     padding: 8px 12px;
     border-radius: 8px;
     border: 1px solid transparent;
     transition: all 0.2s;
   }
-  .calc-check:hover { border-color: var(--border); background: rgba(255,255,255,0.02); }
+  .calc-check:hover { border-color: var(--border); background: var(--surface2); }
   .calc-check input { display: none; }
   .check-box {
     width: 18px;
     height: 18px;
     border-radius: 5px;
-    border: 1.5px solid rgba(255,255,255,0.2);
+    border: 1.5px solid var(--muted);
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -681,10 +735,10 @@
   .compare-table th.launch-col { color: var(--launch); }
   .compare-table th.grow-col { color: var(--grow); }
   .compare-table th.scale-col { color: var(--scale); }
-  .compare-table tr:hover td { background: rgba(255,255,255,0.01); }
+  .compare-table tr:hover td { background: var(--surface2); }
   .compare-table td:first-child { color: var(--muted); }
   .check-y { color: var(--launch); }
-  .check-n { color: rgba(255,255,255,0.15); }
+  .check-n { color: var(--muted); opacity: 0.5; }
 
   /* Responsive */
   @media (max-width: 900px) {
@@ -709,7 +763,7 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    background: rgba(255,255,255,0.04);
+    background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: 100px;
     padding: 3px 10px;
@@ -719,9 +773,133 @@
     margin-bottom: 6px;
   }
   .pill-dot { width: 5px; height: 5px; border-radius: 50%; }
+
+  /* Contact Cards */
+  .contact-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 22px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    min-width: 220px;
+  }
+  .contact-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .contact-card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .contact-card-email .contact-card-icon {
+    background: rgba(251,191,36,0.1);
+  }
+  .contact-card-phone .contact-card-icon {
+    background: var(--launch-glow);
+  }
+  .contact-card:hover.contact-card-email {
+    border-color: rgba(251,191,36,0.4);
+    background: rgba(251,191,36,0.05);
+  }
+  .contact-card:hover.contact-card-phone {
+    border-color: var(--launch);
+    background: var(--launch-glow);
+  }
+  .contact-card-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+  }
+  .contact-card-value {
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+
+  /* Lifetime Plan Section */
+  .lifetime-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 56px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  [data-theme="dark"] .lifetime-section {
+    background: linear-gradient(135deg, #111118 0%, #16101a 50%, #0f1a14 100%);
+  }
+  .lifetime-glow-1, .lifetime-glow-2 {
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    pointer-events: none;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.3;
+  }
+  .lifetime-glow-1 {
+    top: -40px;
+    left: -40px;
+    background: radial-gradient(circle, var(--scale) 0%, transparent 70%);
+  }
+  .lifetime-glow-2 {
+    bottom: -40px;
+    right: -40px;
+    background: radial-gradient(circle, var(--launch) 0%, transparent 70%);
+  }
+  [data-theme="dark"] .lifetime-glow-1,
+  [data-theme="dark"] .lifetime-glow-2 {
+    opacity: 0.5;
+  }
+  .lifetime-crown {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(251,146,60,0.1));
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 16px;
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+
+  /* WA Info Box */
+  .wa-info-box {
+    padding: 14px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .wa-launch-info-box {
+    padding: 14px 16px;
+    background: var(--launch-glow);
+    border: 1px solid var(--launch);
+    border-radius: 10px;
+  }
 </style>
 </head>
 <body>
+
+<!-- Theme Toggle -->
+<div class="theme-toggle">
+  <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle theme">
+    <span id="theme-icon">🌙</span>
+  </button>
+</div>
 
 <div class="container">
 
@@ -978,7 +1156,7 @@
               <span class="check-price">Rs 500 / profile / month</span>
             </div>
             <!-- WA profiles stepper shown when WhatsApp is checked -->
-            <div id="cg-wa-launch" style="display:none; margin-top:6px; margin-left:28px; padding:14px 16px; background:rgba(74,222,128,0.04); border:1px solid rgba(74,222,128,0.15); border-radius:10px;">
+            <div id="cg-wa-launch" class="wa-launch-info-box" style="display:none; margin-top:6px; margin-left:28px;">
               <div style="font-size:12px; color:var(--muted); margin-bottom:10px;">How many WhatsApp profiles? <span style="color:var(--launch); font-weight:500;">(Rs 500 each — can share across branches)</span></div>
               <div class="stepper">
                 <button class="stepper-btn" onclick="adjust('wa_launch', -1)">−</button>
@@ -993,7 +1171,7 @@
         <!-- WA profiles for Growth & Scale (1 included, Rs 500 per extra) -->
         <div class="calc-group" id="cg-wa-extra" style="display:none">
           <label>WhatsApp Profiles</label>
-          <div style="padding:14px 16px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:10px;">
+          <div class="wa-info-box">
             <div style="font-size:12px; color:var(--muted); margin-bottom:10px;">
               <span id="wa-extra-note-top">1 profile included · Rs 500 per additional profile</span>
             </div>
@@ -1077,60 +1255,16 @@
 
   <!-- Lifetime Plan CTA -->
   <div style="margin-bottom: 80px; position: relative;">
-    <div style="
-      background: linear-gradient(135deg, #111118 0%, #16101a 50%, #0f1a14 100%);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 24px;
-      padding: 56px 48px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    ">
+    <div class="lifetime-section">
       <!-- Background glow blobs -->
-      <div style="position:absolute;top:-40px;left:-40px;width:220px;height:220px;background:radial-gradient(circle,rgba(167,139,250,0.1) 0%,transparent 70%);pointer-events:none;"></div>
-      <div style="position:absolute;bottom:-40px;right:-40px;width:220px;height:220px;background:radial-gradient(circle,rgba(74,222,128,0.08) 0%,transparent 70%);pointer-events:none;"></div>
+      <div class="lifetime-glow-1"></div>
+      <div class="lifetime-glow-2"></div>
 
       <!-- Crown icon -->
-      <div style="
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 64px; height: 64px;
-        background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(251,146,60,0.1));
-        border: 1px solid rgba(251,191,36,0.25);
-        border-radius: 18px;
-        font-size: 28px;
-        margin-bottom: 24px;
-      ">♾️</div>
+      <div class="lifetime-crown">👑</div>
 
-      <div style="
-        display: inline-block;
-        background: linear-gradient(90deg, rgba(251,191,36,0.15), rgba(251,146,60,0.15));
-        border: 1px solid rgba(251,191,36,0.3);
-        color: #fbbf24;
-        font-family: 'Syne', sans-serif;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        padding: 5px 14px;
-        border-radius: 100px;
-        margin-bottom: 20px;
-        display: block;
-        width: fit-content;
-        margin: 0 auto 20px;
-      ">Lifetime Access</div>
-
-      <h2 style="
-        font-family: 'Syne', sans-serif;
-        font-size: clamp(28px, 4vw, 42px);
-        font-weight: 800;
-        letter-spacing: -1.5px;
-        margin-bottom: 14px;
-        line-height: 1.1;
-      ">Pay once. Use forever.</h2>
-
-      <p style="color: var(--muted); font-size: 16px; max-width: 480px; margin: 0 auto 40px; line-height: 1.7;">
+      <h2 style="font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-1.5px;margin-bottom:12px;position:relative;z-index:1;">Lifetime Plan</h2>
+      <p style="font-family:var(--font-body);font-size:15px;color:var(--muted);line-height:1.7;max-width:520px;margin:0 auto 28px;position:relative;z-index:1;">
         We offer a <strong style="color:var(--text)">Lifetime Plan</strong> for businesses that want to skip recurring payments entirely. Get in touch and we'll craft the right deal for you.
       </p>
 
@@ -1138,59 +1272,29 @@
       <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 0;">
 
         <!-- Email 1 -->
-        <a href="mailto:bibek@chairlyo.com" style="
-          display: flex; align-items: center; gap: 12px;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.09);
-          border-radius: 14px;
-          padding: 16px 22px;
-          text-decoration: none;
-          color: var(--text);
-          transition: all 0.2s;
-          min-width: 220px;
-        " onmouseover="this.style.borderColor='rgba(251,191,36,0.4)';this.style.background='rgba(251,191,36,0.06)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.09)';this.style.background='rgba(255,255,255,0.04)'">
-          <div style="width:36px;height:36px;background:rgba(251,191,36,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">✉️</div>
+        <a href="mailto:bibek@chairlyo.com" class="contact-card contact-card-email">
+          <div class="contact-card-icon">✉️</div>
           <div style="text-align:left;">
-            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Email</div>
-            <div style="font-size:13.5px;font-weight:500;">bibek@chairlyo.com</div>
+            <div class="contact-card-label">Email</div>
+            <div class="contact-card-value">bibek@chairlyo.com</div>
           </div>
         </a>
 
         <!-- Email 2 -->
-        <a href="mailto:kartik@chairlyo.com" style="
-          display: flex; align-items: center; gap: 12px;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.09);
-          border-radius: 14px;
-          padding: 16px 22px;
-          text-decoration: none;
-          color: var(--text);
-          transition: all 0.2s;
-          min-width: 220px;
-        " onmouseover="this.style.borderColor='rgba(251,191,36,0.4)';this.style.background='rgba(251,191,36,0.06)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.09)';this.style.background='rgba(255,255,255,0.04)'">
-          <div style="width:36px;height:36px;background:rgba(251,191,36,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">✉️</div>
+        <a href="mailto:kartik@chairlyo.com" class="contact-card contact-card-email">
+          <div class="contact-card-icon">✉️</div>
           <div style="text-align:left;">
-            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Email</div>
-            <div style="font-size:13.5px;font-weight:500;">kartik@chairlyo.com</div>
+            <div class="contact-card-label">Email</div>
+            <div class="contact-card-value">kartik@chairlyo.com</div>
           </div>
         </a>
 
         <!-- Phone -->
-        <a href="tel:+9779861601174" style="
-          display: flex; align-items: center; gap: 12px;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.09);
-          border-radius: 14px;
-          padding: 16px 22px;
-          text-decoration: none;
-          color: var(--text);
-          transition: all 0.2s;
-          min-width: 220px;
-        " onmouseover="this.style.borderColor='rgba(74,222,128,0.4)';this.style.background='rgba(74,222,128,0.06)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.09)';this.style.background='rgba(255,255,255,0.04)'">
-          <div style="width:36px;height:36px;background:rgba(74,222,128,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">📞</div>
+        <a href="tel:+9779861601174" class="contact-card contact-card-phone">
+          <div class="contact-card-icon">📞</div>
           <div style="text-align:left;">
-            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Phone</div>
-            <div style="font-size:13.5px;font-weight:500;">+977 986-160-1174</div>
+            <div class="contact-card-label">Phone</div>
+            <div class="contact-card-value">+977 986-160-1174</div>
           </div>
         </a>
 
@@ -1450,6 +1554,48 @@ function calcUpdate() {
 
 // Init
 calcUpdate();
+
+// Theme Toggle
+function toggleTheme() {
+  const html = document.documentElement;
+  const currentTheme = html.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  
+  if (newTheme === 'dark') {
+    html.setAttribute('data-theme', 'dark');
+    document.getElementById('theme-icon').textContent = '☀️';
+  } else {
+    html.removeAttribute('data-theme');
+    document.getElementById('theme-icon').textContent = '🌙';
+  }
+  
+  // Save preference
+  localStorage.setItem('theme', newTheme);
+}
+
+// Load saved theme preference on page load (default is light)
+(function() {
+  const savedTheme = localStorage.getItem('theme');
+  const html = document.documentElement;
+  
+  if (savedTheme === 'dark') {
+    html.setAttribute('data-theme', 'dark');
+  } else {
+    // Light mode is default, ensure no data-theme attribute
+    html.removeAttribute('data-theme');
+  }
+})();
+
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme');
+  const icon = document.getElementById('theme-icon');
+  
+  if (savedTheme === 'dark') {
+    icon.textContent = '☀️';
+  } else {
+    icon.textContent = '🌙';
+  }
+});
 </script>
 </body>
 </html>
