@@ -1163,6 +1163,11 @@
               WhatsApp
               <span class="check-price">Rs 500 / profile / month</span>
             </div>
+            <div class="calc-check" id="chk-lowstock" data-key="lowstock">
+              <span class="check-box">✓</span>
+              Low Stock Notification
+              <span class="check-price" id="lowstock-check-price">Rs 500 / branch / month</span>
+            </div>
             <!-- WA profiles stepper shown when WhatsApp is checked -->
             <div id="cg-wa-launch" class="wa-launch-info-box" style="display:none; margin-top:6px; margin-left:28px;">
               <div style="font-size:12px; color:var(--muted); margin-bottom:10px;">How many WhatsApp profiles? <span style="color:var(--launch); font-weight:500;">(Rs 500 each — can share across branches)</span></div>
@@ -1318,7 +1323,7 @@ let billing = 'monthly'; // header toggle
 let calcPlan = 'launch';
 let calcBilling = 'monthly';
 let steppers = { branches: 0, users: 0, staff: 0, wa: 0, wa_launch: 1 };
-let checks = { email: false, sms: false, whatsapp: false, academy: false, payroll: false };
+let checks = { email: false, sms: false, whatsapp: false, lowstock: false, academy: false, payroll: false };
 
 const basePrices = {
   launch:  { monthly: 3000,   yearly: 32400,    biennially: 57600 },
@@ -1371,7 +1376,7 @@ function updatePlanPrices() {
 function selectPlan(plan, btn) {
   calcPlan = plan;
   steppers = { branches: 0, users: 0, staff: 0, wa: 1, wa_launch: 1 };
-  checks = { email: false, sms: false, whatsapp: false, academy: false, payroll: false };
+  checks = { email: false, sms: false, whatsapp: false, lowstock: false, academy: false, payroll: false };
   ['branches','users','staff'].forEach(k => {
     const el = document.getElementById(k + '-val');
     if(el) el.textContent = 0;
@@ -1495,7 +1500,14 @@ function calcUpdate() {
     emailCost = checks.email ? 500 * totalBranches : 0;
     smsCost   = checks.sms   ? 500 * totalBranches : 0;
     waCost    = checks.whatsapp ? steppers.wa_launch * 500 : 0;
-  } else if(plan === 'grow' || plan === 'scale') {
+  }
+
+  let lowstockCost = 0;
+  if(plan === 'launch') {
+    lowstockCost = checks.lowstock ? 500 * totalBranches : 0;
+  }
+
+  if(plan === 'grow' || plan === 'scale') {
     // 1 profile included, Rs 500 per additional
     const extraProfiles = Math.max(0, steppers.wa - 1);
     waCost = extraProfiles * 500;
@@ -1513,10 +1525,16 @@ function calcUpdate() {
 
   updateBranchPriceLabels();
 
+  // Update lowstock price label
+  const lowstockEl = document.getElementById('lowstock-check-price');
+  if(lowstockEl) lowstockEl.textContent = totalBranches > 1
+    ? `Rs 500 × ${totalBranches} branches = ${fmt(500 * totalBranches)} / mo`
+    : `Rs 500 / branch / month`;
+
   let academyCost = checks.academy ? 3000 : 0;
   let payrollCost = checks.payroll ? 3000 : 0;
 
-  let totalMonthly = baseMonthly + branchCost + userCost + staffCost + waCost + emailCost + smsCost + academyCost + payrollCost;
+  let totalMonthly = baseMonthly + branchCost + userCost + staffCost + waCost + emailCost + smsCost + lowstockCost + academyCost + payrollCost;
 
   // Lines
   lines.push({ label: baseLabel, val: fmt(baseMonthly) + ' / mo' });
@@ -1525,6 +1543,7 @@ function calcUpdate() {
   if(staffCost)  lines.push({ label: `Staff ×${steppers.staff}`,     val: fmt(staffCost) + ' / mo' });
   if(emailCost)  lines.push({ label: `Email Service (${totalBranches} branch${totalBranches>1?'es':''})`, val: fmt(emailCost) + ' / mo' });
   if(smsCost)    lines.push({ label: `SMS (${totalBranches} branch${totalBranches>1?'es':''})`,          val: fmt(smsCost) + ' / mo' });
+  if(lowstockCost) lines.push({ label: `Low Stock Notification (${totalBranches} branch${totalBranches>1?'es':''})`, val: fmt(lowstockCost) + ' / mo' });
   if(waCost && plan === 'launch') lines.push({ label: `WhatsApp (${steppers.wa_launch} profile${steppers.wa_launch>1?'s':''})`, val: fmt(waCost) + ' / mo' });
   if(waCost && (plan === 'grow' || plan === 'scale')) {
     const extra = steppers.wa - 1;
@@ -1553,7 +1572,7 @@ function calcUpdate() {
     savingEl.classList.remove('show');
   } else if(calcBilling === 'yearly') {
     // Yearly: base from yearly price + addons * 12
-    let addonYearly = (branchCost + userCost + staffCost + waCost + emailCost + smsCost + academyCost + payrollCost) * 12;
+    let addonYearly = (branchCost + userCost + staffCost + waCost + emailCost + smsCost + lowstockCost + academyCost + payrollCost) * 12;
     let totalYearly = annualBase + addonYearly;
     let monthlyEquiv = totalMonthly * 12;
     let saving = monthlyEquiv - totalYearly;
@@ -1567,7 +1586,7 @@ function calcUpdate() {
     }
   } else if(calcBilling === 'biennially') {
     // Biennially: base from biennially price + addons * 24 (20% off monthly for 24 months)
-    let addonBiennially = (branchCost + userCost + staffCost + waCost + emailCost + smsCost + academyCost + payrollCost) * 24;
+    let addonBiennially = (branchCost + userCost + staffCost + waCost + emailCost + smsCost + lowstockCost + academyCost + payrollCost) * 24;
     let totalBiennially = bp.biennially + addonBiennially;
     let monthlyEquiv = totalMonthly * 24;
     let saving = monthlyEquiv - totalBiennially;
@@ -1583,7 +1602,22 @@ function calcUpdate() {
 }
 
 // Init
-calcUpdate();
+// Initialize plan display
+document.addEventListener('DOMContentLoaded', function() {
+  const initialBtn = document.querySelector('.plan-select-btn.active-launch');
+  if(initialBtn) {
+    selectPlan('launch', initialBtn);
+  } else {
+    // Fallback: manually initialize display
+    document.getElementById('cg-comms').style.display = '';
+    document.getElementById('cg-wa-extra').style.display = 'none';
+    document.getElementById('cg-users').style.display = '';
+    document.getElementById('cg-staff').style.display = '';
+    document.querySelector('[data-key="academy"]').style.display = '';
+    document.querySelector('[data-key="payroll"]').style.display = '';
+    calcUpdate();
+  }
+});
 
 // Theme Toggle
 function toggleTheme() {
