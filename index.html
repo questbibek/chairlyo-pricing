@@ -915,6 +915,10 @@
         Yearly
         <span class="save-badge">Save ~11%</span>
       </button>
+      <button class="toggle-btn" onclick="setBilling('biennially', this)">
+        Biennially
+        <span class="save-badge">Save 20%</span>
+      </button>
     </div>
   </header>
 
@@ -930,6 +934,7 @@
         <span class="currency">Rs</span><span class="amount" id="launch-price">3,000</span>
         <div class="period">per month, billed <span id="launch-billing">monthly</span></div>
         <div class="yearly-note" id="launch-yearly" style="display:none">Rs 32,400 / year · Save Rs 3,600</div>
+        <div class="yearly-note" id="launch-biennially" style="display:none">Rs 28,800 / year, billed biannually · Save Rs 14,400</div>
       </div>
       <hr class="divider">
       <div class="features-title">What's included</div>
@@ -956,6 +961,7 @@
         <span class="currency">Rs</span><span class="amount" id="grow-price">5,000</span>
         <div class="period">per month, billed <span id="grow-billing">monthly</span></div>
         <div class="yearly-note" id="grow-yearly" style="display:none">Rs 54,000 / year · Save Rs 6,000</div>
+        <div class="yearly-note" id="grow-biennially" style="display:none">Rs 48,000 / year, billed biannually · Save Rs 24,000</div>
       </div>
       <hr class="divider">
       <div class="features-title">Everything in Launch, plus</div>
@@ -981,6 +987,7 @@
         <span class="currency">Rs</span><span class="amount" id="scale-price">10,000</span>
         <div class="period">per month, billed <span id="scale-billing">monthly</span></div>
         <div class="yearly-note" id="scale-yearly" style="display:none">Rs 1,00,000 / year · Save Rs 20,000</div>
+        <div class="yearly-note" id="scale-biennially" style="display:none">Rs 96,000 / year, billed biannually · Save Rs 48,000</div>
       </div>
       <hr class="divider">
       <div class="features-title">Everything in Growth, plus</div>
@@ -1103,6 +1110,7 @@
           <div class="calc-billing-toggle">
             <button class="calc-billing-btn active" onclick="setCalcBilling('monthly', this)">Monthly</button>
             <button class="calc-billing-btn" onclick="setCalcBilling('yearly', this)">Yearly</button>
+            <button class="calc-billing-btn" onclick="setCalcBilling('biennially', this)">Biennially</button>
           </div>
         </div>
 
@@ -1313,9 +1321,9 @@ let steppers = { branches: 0, users: 0, staff: 0, wa: 0, wa_launch: 1 };
 let checks = { email: false, sms: false, whatsapp: false, academy: false, payroll: false };
 
 const basePrices = {
-  launch:  { monthly: 3000,   yearly: 32400 },
-  grow:    { monthly: 5000,   yearly: 54000 },
-  scale:   { monthly: 10000,  yearly: 100000 }
+  launch:  { monthly: 3000,   yearly: 32400,    biennially: 57600 },
+  grow:    { monthly: 5000,   yearly: 54000,    biennially: 96000 },
+  scale:   { monthly: 10000,  yearly: 100000,   biennially: 192000 }
 };
 const addonPrices = {
   launch:  { user: 1000, branch: 1000, staff: 300,  wa_profile: 500 },
@@ -1333,20 +1341,28 @@ function setBilling(type, btn) {
 
 function updatePlanPrices() {
   const plans = ['launch', 'grow', 'scale'];
-  const labels = { monthly: 'monthly', yearly: 'yearly' };
+  const labels = { monthly: 'monthly', yearly: 'yearly', biennially: 'biennially' };
   plans.forEach(p => {
     const bp = basePrices[p];
     const el = document.getElementById(p + '-price');
     const billingEl = document.getElementById(p + '-billing');
     const yearlyEl = document.getElementById(p + '-yearly');
+    const bienniallyEl = document.getElementById(p + '-biennially');
     if(billing === 'monthly') {
       el.textContent = bp.monthly.toLocaleString('en-IN');
       billingEl.textContent = 'monthly';
       yearlyEl.style.display = 'none';
-    } else {
+      bienniallyEl.style.display = 'none';
+    } else if(billing === 'yearly') {
       el.textContent = (bp.yearly / 12).toLocaleString('en-IN', {maximumFractionDigits:0});
       billingEl.textContent = 'yearly';
       yearlyEl.style.display = 'block';
+      bienniallyEl.style.display = 'none';
+    } else if(billing === 'biennially') {
+      el.textContent = (bp.biennially / 24).toLocaleString('en-IN', {maximumFractionDigits:0});
+      billingEl.textContent = 'biannually';
+      yearlyEl.style.display = 'none';
+      bienniallyEl.style.display = 'block';
     }
   });
 }
@@ -1535,7 +1551,7 @@ function calcUpdate() {
     totalEl.textContent = fmt(totalMonthly);
     perEl.textContent = 'per month';
     savingEl.classList.remove('show');
-  } else {
+  } else if(calcBilling === 'yearly') {
     // Yearly: base from yearly price + addons * 12
     let addonYearly = (branchCost + userCost + staffCost + waCost + emailCost + smsCost + academyCost + payrollCost) * 12;
     let totalYearly = annualBase + addonYearly;
@@ -1543,6 +1559,20 @@ function calcUpdate() {
     let saving = monthlyEquiv - totalYearly;
     totalEl.textContent = fmt(totalYearly);
     perEl.textContent = 'per year';
+    if(saving > 0) {
+      savingEl.classList.add('show');
+      savingEl.textContent = `🎉 You save ${fmt(saving)} compared to monthly billing`;
+    } else {
+      savingEl.classList.remove('show');
+    }
+  } else if(calcBilling === 'biennially') {
+    // Biennially: base from biennially price + addons * 24 (20% off monthly for 24 months)
+    let addonBiennially = (branchCost + userCost + staffCost + waCost + emailCost + smsCost + academyCost + payrollCost) * 24;
+    let totalBiennially = bp.biennially + addonBiennially;
+    let monthlyEquiv = totalMonthly * 24;
+    let saving = monthlyEquiv - totalBiennially;
+    totalEl.textContent = fmt(totalBiennially);
+    perEl.textContent = 'per 2 years';
     if(saving > 0) {
       savingEl.classList.add('show');
       savingEl.textContent = `🎉 You save ${fmt(saving)} compared to monthly billing`;
