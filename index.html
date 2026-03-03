@@ -189,6 +189,64 @@
     letter-spacing: 0.5px;
   }
 
+  /* Value Proposition */
+  .value-proposition {
+    text-align: center;
+    margin-bottom: 64px;
+    font-size: 19px;
+    color: var(--muted);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .value-proposition .value-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .value-proposition .rotating-word {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--accent);
+    min-width: 80 px;
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    transition: opacity 0.3s ease-in-out;
+  }
+  .value-proposition .rotating-word.fade {
+    opacity: 0;
+  }
+  .value-proposition strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .value-proposition .orbit-container {
+    position: relative;
+    display: inline-block;
+  }
+  .value-proposition .orbit-icon {
+    position: absolute;
+    font-size: 24px;
+    animation: orbit 4s linear infinite;
+  }
+  @keyframes orbit {
+    0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
+  }
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
   /* Plans Grid */
   .plans-grid {
     display: grid;
@@ -639,18 +697,31 @@
     font-size: 13px;
     margin-top: 4px;
   }
-  .result-saving {
-    margin-top: 12px;
-    padding: 10px 14px;
-    background: rgba(74,222,128,0.08);
-    border: 1px solid rgba(74,222,128,0.2);
-    border-radius: 10px;
-    font-family: var(--font-body);
-    font-size: 12px;
-    color: var(--launch);
-    display: none;
-  }
+  .result-saving { display: none; }
   .result-saving.show { display: block; }
+
+  .result-daily {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: var(--font-body);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .result-daily-label {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .result-daily-amount {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+  }
 
   /* Modules */
   .modules-grid {
@@ -748,6 +819,21 @@
     .result-panel { position: static; }
     header h1 { font-size: 36px; letter-spacing: -1.5px; }
     .calculator-section { padding: 28px 20px; }
+  }
+
+  @media (max-width: 480px) {
+    .billing-toggle {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 100%;
+      padding-bottom: 8px;
+    }
+    .toggle-btn {
+      flex: 0 0 calc(33.333% - 3px);
+      padding: 10px 8px;
+      font-size: 11px;
+    }
   }
 
   /* Animation */
@@ -919,8 +1005,19 @@
         Biennially
         <span class="save-badge">Save 20%</span>
       </button>
+      <button class="toggle-btn" onclick="setBilling('daily', this)">
+        Daily
+      </button>
     </div>
   </header>
+
+  <!-- Value Proposition -->
+  <div class="value-proposition">
+    <div class="value-text">
+      <span class="rotating-word" id="rotating-word">Growth</span>
+      <span>— <strong>without the crazy price.</strong></span>
+    </div>
+  </div>
 
   <!-- Plans -->
   <div class="plans-grid">
@@ -935,6 +1032,7 @@
         <div class="period">per month, billed <span id="launch-billing">monthly</span></div>
         <div class="yearly-note" id="launch-yearly" style="display:none">Rs 32,400 / year · Save Rs 3,600</div>
         <div class="yearly-note" id="launch-biennially" style="display:none">Rs 28,800 / year, billed biannually · Save Rs 14,400</div>
+        <div class="yearly-note" id="launch-daily" style="display:none">Rs 100 per day · Just Rs 36,500 / year!</div>
       </div>
       <hr class="divider">
       <div class="features-title">What's included</div>
@@ -962,6 +1060,7 @@
         <div class="period">per month, billed <span id="grow-billing">monthly</span></div>
         <div class="yearly-note" id="grow-yearly" style="display:none">Rs 54,000 / year · Save Rs 6,000</div>
         <div class="yearly-note" id="grow-biennially" style="display:none">Rs 48,000 / year, billed biannually · Save Rs 24,000</div>
+        <div class="yearly-note" id="grow-daily" style="display:none">Rs 167 per day · Just Rs 60,833 / year!</div>
       </div>
       <hr class="divider">
       <div class="features-title">Everything in Launch, plus</div>
@@ -988,6 +1087,7 @@
         <div class="period">per month, billed <span id="scale-billing">monthly</span></div>
         <div class="yearly-note" id="scale-yearly" style="display:none">Rs 1,00,000 / year · Save Rs 20,000</div>
         <div class="yearly-note" id="scale-biennially" style="display:none">Rs 96,000 / year, billed biannually · Save Rs 48,000</div>
+        <div class="yearly-note" id="scale-daily" style="display:none">Rs 333 per day · Just Rs 1,21,667 / year!</div>
       </div>
       <hr class="divider">
       <div class="features-title">Everything in Growth, plus</div>
@@ -1226,6 +1326,10 @@
           <div class="result-total-amount" id="result-total">Rs 0</div>
           <div class="result-total-per" id="result-per">per month</div>
           <div class="result-saving" id="result-saving"></div>
+          <div class="result-daily">
+            <div class="result-daily-label">Daily Cost</div>
+            <div class="result-daily-amount" id="result-daily">Rs 0</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1325,6 +1429,32 @@ let calcBilling = 'monthly';
 let steppers = { branches: 0, users: 0, staff: 0, wa: 0, wa_launch: 1 };
 let checks = { email: false, sms: false, whatsapp: false, lowstock: false, academy: false, payroll: false };
 
+// ---- Word Rotation for Value Proposition
+const words = ['Growth', 'Peace of mind', 'Transparency', 'Scale'];
+let wordIndex = 0;
+
+function rotateWord() {
+  const rotatingElement = document.getElementById('rotating-word');
+  if (!rotatingElement) return;
+  
+  // Fade out
+  rotatingElement.classList.add('fade');
+  
+  setTimeout(() => {
+    // Change word
+    wordIndex = (wordIndex + 1) % words.length;
+    rotatingElement.textContent = words[wordIndex];
+    
+    // Fade in
+    rotatingElement.classList.remove('fade');
+  }, 300);
+}
+
+// Start word rotation on page load
+document.addEventListener('DOMContentLoaded', () => {
+  setInterval(rotateWord, 2000);
+});
+
 const basePrices = {
   launch:  { monthly: 3000,   yearly: 32400,    biennially: 57600 },
   grow:    { monthly: 5000,   yearly: 54000,    biennially: 96000 },
@@ -1346,28 +1476,39 @@ function setBilling(type, btn) {
 
 function updatePlanPrices() {
   const plans = ['launch', 'grow', 'scale'];
-  const labels = { monthly: 'monthly', yearly: 'yearly', biennially: 'biennially' };
+  const labels = { monthly: 'monthly', yearly: 'yearly', biennially: 'biennially', daily: 'daily' };
+  const dailyPrices = { launch: 100, grow: 167, scale: 333 };
   plans.forEach(p => {
     const bp = basePrices[p];
     const el = document.getElementById(p + '-price');
     const billingEl = document.getElementById(p + '-billing');
     const yearlyEl = document.getElementById(p + '-yearly');
     const bienniallyEl = document.getElementById(p + '-biennially');
+    const dailyEl = document.getElementById(p + '-daily');
     if(billing === 'monthly') {
       el.textContent = bp.monthly.toLocaleString('en-IN');
       billingEl.textContent = 'monthly';
       yearlyEl.style.display = 'none';
       bienniallyEl.style.display = 'none';
+      dailyEl.style.display = 'none';
     } else if(billing === 'yearly') {
       el.textContent = (bp.yearly / 12).toLocaleString('en-IN', {maximumFractionDigits:0});
       billingEl.textContent = 'yearly';
       yearlyEl.style.display = 'block';
       bienniallyEl.style.display = 'none';
+      dailyEl.style.display = 'none';
     } else if(billing === 'biennially') {
       el.textContent = (bp.biennially / 24).toLocaleString('en-IN', {maximumFractionDigits:0});
       billingEl.textContent = 'biannually';
       yearlyEl.style.display = 'none';
       bienniallyEl.style.display = 'block';
+      dailyEl.style.display = 'none';
+    } else if(billing === 'daily') {
+      el.textContent = dailyPrices[p].toLocaleString('en-IN');
+      billingEl.textContent = 'daily';
+      yearlyEl.style.display = 'none';
+      bienniallyEl.style.display = 'none';
+      dailyEl.style.display = 'block';
     }
   });
 }
@@ -1565,11 +1706,13 @@ function calcUpdate() {
   const totalEl = document.getElementById('result-total');
   const perEl = document.getElementById('result-per');
   const savingEl = document.getElementById('result-saving');
+  const dailyEl = document.getElementById('result-daily');
 
   if(calcBilling === 'monthly') {
     totalEl.textContent = fmt(totalMonthly);
     perEl.textContent = 'per month';
     savingEl.classList.remove('show');
+    dailyEl.textContent = fmt(Math.round(totalMonthly / 30));
   } else if(calcBilling === 'yearly') {
     // Yearly: base from yearly price + addons * 12
     let addonYearly = (branchCost + userCost + staffCost + waCost + emailCost + smsCost + lowstockCost + academyCost + payrollCost) * 12;
@@ -1578,6 +1721,7 @@ function calcUpdate() {
     let saving = monthlyEquiv - totalYearly;
     totalEl.textContent = fmt(totalYearly);
     perEl.textContent = 'per year';
+    dailyEl.textContent = fmt(Math.round(totalYearly / 365));
     if(saving > 0) {
       savingEl.classList.add('show');
       savingEl.textContent = `🎉 You save ${fmt(saving)} compared to monthly billing`;
@@ -1592,6 +1736,7 @@ function calcUpdate() {
     let saving = monthlyEquiv - totalBiennially;
     totalEl.textContent = fmt(totalBiennially);
     perEl.textContent = 'per 2 years';
+    dailyEl.textContent = fmt(Math.round(totalBiennially / 730));
     if(saving > 0) {
       savingEl.classList.add('show');
       savingEl.textContent = `🎉 You save ${fmt(saving)} compared to monthly billing`;
