@@ -1675,7 +1675,11 @@ function calcUpdate() {
   let academyCost = checks.academy ? 3000 : 0;
   let payrollCost = checks.payroll ? 3000 : 0;
 
-  let totalMonthly = baseMonthly + branchCost + userCost + staffCost + waCost + emailCost + smsCost + lowstockCost + academyCost + payrollCost;
+  const addonMonthlyTotal = branchCost + userCost + staffCost + waCost + emailCost + smsCost + lowstockCost + academyCost + payrollCost;
+  const billingCycleMonths = { monthly: 1, yearly: 12, biennially: 24 };
+  const addonBillingTotal = addonMonthlyTotal * (billingCycleMonths[calcBilling] || 1);
+
+  let totalMonthly = baseMonthly + addonMonthlyTotal;
 
   // Lines
   lines.push({ label: baseLabel, val: fmt(baseMonthly) + ' / mo' });
@@ -1714,9 +1718,8 @@ function calcUpdate() {
     savingEl.classList.remove('show');
     dailyEl.textContent = fmt(Math.round(totalMonthly / 30));
   } else if(calcBilling === 'yearly') {
-    // Yearly: base from yearly price + addons * 12
-    let addonYearly = (branchCost + userCost + staffCost + waCost + emailCost + smsCost + lowstockCost + academyCost + payrollCost) * 12;
-    let totalYearly = annualBase + addonYearly;
+    // Yearly: base yearly price + monthly-priced addons scaled to 12 months
+    let totalYearly = annualBase + addonBillingTotal;
     let monthlyEquiv = totalMonthly * 12;
     let saving = monthlyEquiv - totalYearly;
     totalEl.textContent = fmt(totalYearly);
@@ -1729,9 +1732,8 @@ function calcUpdate() {
       savingEl.classList.remove('show');
     }
   } else if(calcBilling === 'biennially') {
-    // Biennially: base from biennially price + addons * 24 (20% off monthly for 24 months)
-    let addonBiennially = (branchCost + userCost + staffCost + waCost + emailCost + smsCost + lowstockCost + academyCost + payrollCost) * 24;
-    let totalBiennially = bp.biennially + addonBiennially;
+    // Biennially: base biennial price + monthly-priced addons scaled to 24 months
+    let totalBiennially = bp.biennially + addonBillingTotal;
     let monthlyEquiv = totalMonthly * 24;
     let saving = monthlyEquiv - totalBiennially;
     totalEl.textContent = fmt(totalBiennially);
