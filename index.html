@@ -1678,24 +1678,26 @@ function calcUpdate() {
   const addonMonthlyTotal = branchCost + userCost + staffCost + waCost + emailCost + smsCost + lowstockCost + academyCost + payrollCost;
   const billingCycleMonths = { monthly: 1, yearly: 12, biennially: 24 };
   const addonBillingTotal = addonMonthlyTotal * (billingCycleMonths[calcBilling] || 1);
+  const addonPeriodLabel = calcBilling === 'yearly' ? ' / year' : calcBilling === 'biennially' ? ' / 2 years' : ' / mo';
+  const formatAddonLine = (monthlyAmount) => fmt(monthlyAmount * (billingCycleMonths[calcBilling] || 1)) + addonPeriodLabel;
 
   let totalMonthly = baseMonthly + addonMonthlyTotal;
 
   // Lines
   lines.push({ label: baseLabel, val: fmt(baseMonthly) + ' / mo' });
-  if(branchCost) lines.push({ label: `Branches ×${steppers.branches}`, val: fmt(branchCost) + ' / mo' });
-  if(userCost)   lines.push({ label: `Users ×${steppers.users}`,     val: fmt(userCost) + ' / mo' });
-  if(staffCost)  lines.push({ label: `Staff ×${steppers.staff}`,     val: fmt(staffCost) + ' / mo' });
-  if(emailCost)  lines.push({ label: `Email Service (${totalBranches} branch${totalBranches>1?'es':''})`, val: fmt(emailCost) + ' / mo' });
-  if(smsCost)    lines.push({ label: `SMS (${totalBranches} branch${totalBranches>1?'es':''})`,          val: fmt(smsCost) + ' / mo' });
-  if(lowstockCost) lines.push({ label: `Low Stock Notification (${totalBranches} branch${totalBranches>1?'es':''})`, val: fmt(lowstockCost) + ' / mo' });
-  if(waCost && plan === 'launch') lines.push({ label: `WhatsApp (${steppers.wa_launch} profile${steppers.wa_launch>1?'s':''})`, val: fmt(waCost) + ' / mo' });
+  if(branchCost) lines.push({ label: `Branches ×${steppers.branches}`, val: formatAddonLine(branchCost) });
+  if(userCost)   lines.push({ label: `Users ×${steppers.users}`,     val: formatAddonLine(userCost) });
+  if(staffCost)  lines.push({ label: `Staff ×${steppers.staff}`,     val: formatAddonLine(staffCost) });
+  if(emailCost)  lines.push({ label: `Email Service (${totalBranches} branch${totalBranches>1?'es':''})`, val: formatAddonLine(emailCost) });
+  if(smsCost)    lines.push({ label: `SMS (${totalBranches} branch${totalBranches>1?'es':''})`,          val: formatAddonLine(smsCost) });
+  if(lowstockCost) lines.push({ label: `Low Stock Notification (${totalBranches} branch${totalBranches>1?'es':''})`, val: formatAddonLine(lowstockCost) });
+  if(waCost && plan === 'launch') lines.push({ label: `WhatsApp (${steppers.wa_launch} profile${steppers.wa_launch>1?'s':''})`, val: formatAddonLine(waCost) });
   if(waCost && (plan === 'grow' || plan === 'scale')) {
     const extra = steppers.wa - 1;
-    lines.push({ label: `WhatsApp Extra Profiles ×${extra}`, val: fmt(waCost) + ' / mo' });
+    lines.push({ label: `WhatsApp Extra Profiles ×${extra}`, val: formatAddonLine(waCost) });
   }
-  if(academyCost) lines.push({ label: 'Academy Module', val: fmt(academyCost) + ' / mo' });
-  if(payrollCost) lines.push({ label: 'Payroll Module', val: fmt(payrollCost) + ' / mo' });
+  if(academyCost) lines.push({ label: 'Academy Module', val: formatAddonLine(academyCost) });
+  if(payrollCost) lines.push({ label: 'Payroll Module', val: formatAddonLine(payrollCost) });
 
   // Render lines
   const breakdownEl = document.getElementById('breakdown-lines');
