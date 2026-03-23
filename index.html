@@ -1145,8 +1145,10 @@
           <li><span class="icon">✓</span>Email included</li>
           <li><span class="icon">✓</span>1K SMS included</li>
           <li><span class="icon">✓</span>WhatsApp included - 1 Number</li>
-          <li><span class="icon">✓</span>Smart notifications</li>
-          <li><span class="icon">✓</span>Alert groups</li>
+          <li><span class="icon">✓</span>Payment notifications</li>
+          <li><span class="icon">✓</span>Group for appointment alerts</li>
+          <li><span class="icon">✓</span>Group for payment alerts</li>
+          <li><span class="icon">✓</span>Group for low stock alerts</li>
           <li><span class="icon">✓</span>Google review request after service</li>
           <li><span class="icon">✓</span>Payment confirmation to customer</li>
           <li><span class="icon">✓</span>Loyality Stamps</li>
@@ -1192,11 +1194,11 @@
           <li><span class="icon">✓</span>Group for low stock alerts</li>
           <li><span class="icon">✓</span>Google review request after service</li>
           <li><span class="icon">✓</span>Payment confirmation to customer</li>
-          <li><span class="icon">✓</span>Academy Management</li>
-          <li><span class="icon">✓</span>Payroll Management</li>
           <li><span class="icon">✓</span>Inventory Low Stock Notifications</li>
           <li><span class="icon">✓</span>Loyality Stamps</li>
           <li><span class="icon">✓</span>Packages and Membership</li>
+          <li><span class="icon">✓</span>Academy Management</li>
+          <li><span class="icon">✓</span>Staff Attendance & Payroll</li>
         </ul>
       </div>
       <button type="button" class="features-toggle-btn" onclick="togglePlanFeatures(this)">View all features</button>
@@ -1415,10 +1417,16 @@
               Academy Module
               <span class="check-price" id="academy-price-label">Rs 4,500 / month</span>
             </div>
+            <div class="calc-addon-note" id="academy-addon-note" style="display:none;">
+              Includes: Student enrollments, fee collection via WhatsApp & SMS reminders, certificate generation & verification, and complete payment records.
+            </div>
             <div class="calc-check" id="chk-payroll" data-key="payroll">
               <span class="check-box">✓</span>
-              Payroll Module
+              Payroll & Staff Management
               <span class="check-price" id="payroll-price-label">Rs 3,000 / month</span>
+            </div>
+            <div class="calc-addon-note" id="payroll-addon-note" style="display:none;">
+              Includes: Staff attendance tracking, leave management, allowances, deductions, salary slips, and overtime payment calculations.
             </div>
           </div>
         </div>
@@ -1473,9 +1481,23 @@
       <tr><td>Email Notifications</td><td>Add-on</td><td class="check-y">Included</td><td class="check-y">Included</td></tr>
       <tr><td>SMS Notifications</td><td>Add-on</td><td class="check-y">Included</td><td class="check-y">Included</td></tr>
       <tr><td>WhatsApp</td><td>Add-on</td><td class="check-y">1 Profile Included (Rs 1,000 / extra)</td><td class="check-y">Included</td></tr>
+      <tr><td>Payment Notifications</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td>Group for Appointment Alerts</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td>Group for Payment Alerts</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td>Group for Low Stock Alerts</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td>Google Review Request after Service</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td>Payment Confirmation to Customer</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
       <tr><td>Inventory Low Stock Alerts</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
-      <tr><td>Academy Management</td><td class="check-n">—</td><td>Add-on (Rs 4.5k)</td><td class="check-y">Included</td></tr>
-      <tr><td>Payroll Management</td><td class="check-n">—</td><td>Add-on (Rs 3k)</td><td class="check-y">Included</td></tr>
+      <tr style="background: var(--surface2); font-weight: 600; font-size: 13px;"><td colspan="4">Academy Management</td></tr>
+      <tr><td>Student Enrollments & Records</td><td class="check-n">—</td><td>Add-on (Rs 4.5k)</td><td class="check-y">Included</td></tr>
+      <tr><td>Fee Collection with SMS & WhatsApp Reminders</td><td class="check-n">—</td><td>Add-on (Rs 4.5k)</td><td class="check-y">Included</td></tr>
+      <tr><td>Certificate Generation & Verification</td><td class="check-n">—</td><td>Add-on (Rs 4.5k)</td><td class="check-y">Included</td></tr>
+      <tr><td>Payment Records & Tracking</td><td class="check-n">—</td><td>Add-on (Rs 4.5k)</td><td class="check-y">Included</td></tr>
+      <tr style="background: var(--surface2); font-weight: 600; font-size: 13px;"><td colspan="4">Staff & Payroll Management</td></tr>
+      <tr><td>Staff Attendance Tracking</td><td class="check-n">—</td><td>Add-on (Rs 3k)</td><td class="check-y">Included</td></tr>
+      <tr><td>Leave Management</td><td class="check-n">—</td><td>Add-on (Rs 3k)</td><td class="check-y">Included</td></tr>
+      <tr><td>Allowances & Deductions</td><td class="check-n">—</td><td>Add-on (Rs 3k)</td><td class="check-y">Included</td></tr>
+      <tr><td>Salary Slips & Overtime Payment</td><td class="check-n">—</td><td>Add-on (Rs 3k)</td><td class="check-y">Included</td></tr>
       <tr><td>Monthly Price</td><td>Rs 6,000</td><td>Rs 9,000</td><td>Rs 15,000</td></tr>
       <tr><td>Yearly Price</td><td>Rs 64,800</td><td>Rs 97,200</td><td>Rs 1,50,000</td></tr>
     </tbody>
@@ -1800,6 +1822,12 @@ function calcUpdate() {
 
   const trainingAddonNote = document.getElementById('training-addon-note');
   if(trainingAddonNote) trainingAddonNote.style.display = checks.training ? 'block' : 'none';
+
+  const academyAddonNote = document.getElementById('academy-addon-note');
+  if(academyAddonNote) academyAddonNote.style.display = checks.academy ? 'block' : 'none';
+
+  const payrollAddonNote = document.getElementById('payroll-addon-note');
+  if(payrollAddonNote) payrollAddonNote.style.display = checks.payroll ? 'block' : 'none';
 
   const addonMonthlyTotal = branchCost + userCost + staffCost + waCost + emailCost + smsCost + lowstockCost + academyCost + payrollCost;
   const billingCycleMonths = { monthly: 1, yearly: 12, biennially: 24 };
