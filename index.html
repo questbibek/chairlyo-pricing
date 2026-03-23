@@ -1237,7 +1237,7 @@
       <div class="addon-row">
         <span class="label">Email Service</span>
         <div class="prices">
-          <div class="price-launch">Launch: Rs 1,000 / branch / month</div>
+          <div class="price-launch">Launch: Rs 1,000 / month</div>
           <div class="price-grow">Growth: Included</div>
           <div class="price-scale">Scale: Included</div>
         </div>
@@ -1245,7 +1245,7 @@
       <div class="addon-row">
         <span class="label">SMS</span>
         <div class="prices">
-          <div class="price-launch">Launch: Rs 1,000 / branch / month</div>
+          <div class="price-launch">Launch: Rs 1,000 / month</div>
           <div class="price-grow">Growth: 1k units free, then Rs 1 / SMS</div>
           <div class="price-scale">Scale: Included</div>
         </div>
@@ -1354,12 +1354,12 @@
             <div class="calc-check" id="chk-email" data-key="email">
               <span class="check-box">✓</span>
               Email Service
-              <span class="check-price" id="email-check-price">Rs 1,000 / branch / month</span>
+              <span class="check-price" id="email-check-price">Rs 1,000 / month</span>
             </div>
             <div class="calc-check" id="chk-sms" data-key="sms">
               <span class="check-box">✓</span>
               SMS
-              <span class="check-price" id="sms-check-price">Rs 1,000 / branch / month</span>
+              <span class="check-price" id="sms-check-price">Rs 1,000 / month</span>
             </div>
             <div class="calc-check" id="chk-wa" data-key="whatsapp">
               <span class="check-box">✓</span>
@@ -1369,7 +1369,7 @@
             <div class="calc-check" id="chk-lowstock" data-key="lowstock">
               <span class="check-box">✓</span>
               Low Stock Notification
-              <span class="check-price" id="lowstock-check-price">Rs 1,000 / branch / month</span>
+              <span class="check-price" id="lowstock-check-price">Rs 1,000 / month</span>
             </div>
             <!-- WA profiles stepper shown when WhatsApp is checked -->
             <div id="cg-wa-launch" class="wa-launch-info-box" style="display:none; margin-top:6px; margin-left:28px;">
@@ -1738,15 +1738,10 @@ function toggleCheck(key) {
 }
 
 function updateBranchPriceLabels() {
-  const totalBranches = 1 + steppers.branches;
   const emailEl = document.getElementById('email-check-price');
   const smsEl = document.getElementById('sms-check-price');
-  if(emailEl) emailEl.textContent = totalBranches > 1
-    ? `Rs 1,000 × ${totalBranches} branches = ${fmt(1000 * totalBranches)} / mo`
-    : `Rs 1,000 / branch / month`;
-  if(smsEl) smsEl.textContent = totalBranches > 1
-    ? `Rs 1,000 × ${totalBranches} branches = ${fmt(1000 * totalBranches)} / mo`
-    : `Rs 1,000 / branch / month`;
+  if(emailEl) emailEl.textContent = 'Rs 1,000 / month';
+  if(smsEl) smsEl.textContent = 'Rs 1,000 / month';
 }
 
 // Attach click listeners to all .calc-check divs
@@ -1781,14 +1776,14 @@ function calcUpdate() {
   let emailCost = 0, smsCost = 0;
 
   if(plan === 'launch') {
-    emailCost = checks.email ? 1000 * totalBranches : 0;
-    smsCost   = checks.sms   ? 1000 * totalBranches : 0;
+    emailCost = checks.email ? 1000 : 0;
+    smsCost   = checks.sms ? 1000 : 0;
     waCost    = checks.whatsapp ? steppers.wa_launch * 1500 : 0;
   }
 
   let lowstockCost = 0;
   if(plan === 'launch') {
-    lowstockCost = checks.lowstock ? 1000 * totalBranches : 0;
+    lowstockCost = checks.lowstock ? 1000 : 0;
   }
 
   if(plan === 'grow' || plan === 'scale') {
@@ -1812,9 +1807,7 @@ function calcUpdate() {
 
   // Update lowstock price label
   const lowstockEl = document.getElementById('lowstock-check-price');
-  if(lowstockEl) lowstockEl.textContent = totalBranches > 1
-    ? `Rs 1,000 × ${totalBranches} branches = ${fmt(1000 * totalBranches)} / mo`
-    : `Rs 1,000 / branch / month`;
+  if(lowstockEl) lowstockEl.textContent = 'Rs 1,000 / month';
 
   let trainingCost = checks.training ? 25000 : 0;
   let academyCost = checks.academy ? 4500 : 0;
@@ -1842,9 +1835,9 @@ function calcUpdate() {
   if(branchCost) lines.push({ label: `Branches ×${steppers.branches}`, val: formatAddonLine(branchCost) });
   if(userCost)   lines.push({ label: `Users ×${steppers.users}`,     val: formatAddonLine(userCost) });
   if(staffCost)  lines.push({ label: `Staff ×${steppers.staff}`,     val: formatAddonLine(staffCost) });
-  if(emailCost)  lines.push({ label: `Email Service (${totalBranches} branch${totalBranches>1?'es':''})`, val: formatAddonLine(emailCost) });
-  if(smsCost)    lines.push({ label: `SMS (${totalBranches} branch${totalBranches>1?'es':''})`,          val: formatAddonLine(smsCost) });
-  if(lowstockCost) lines.push({ label: `Low Stock Notification (${totalBranches} branch${totalBranches>1?'es':''})`, val: formatAddonLine(lowstockCost) });
+  if(emailCost)  lines.push({ label: 'Email Service', val: formatAddonLine(emailCost) });
+  if(smsCost)    lines.push({ label: 'SMS', val: formatAddonLine(smsCost) });
+  if(lowstockCost) lines.push({ label: 'Low Stock Notification', val: formatAddonLine(lowstockCost) });
   if(waCost && plan === 'launch') lines.push({ label: `WhatsApp (${steppers.wa_launch} profile${steppers.wa_launch>1?'s':''})`, val: formatAddonLine(waCost) });
   if(waCost && (plan === 'grow' || plan === 'scale')) {
     const extra = steppers.wa - 1;
