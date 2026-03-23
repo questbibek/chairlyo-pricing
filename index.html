@@ -668,6 +668,20 @@
   }
   .calc-check:hover { border-color: var(--border); background: var(--surface2); }
   .calc-check input { display: none; }
+  .calc-addon-note {
+    margin-left: 30px;
+    margin-top: -2px;
+    margin-bottom: 6px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface2);
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 12px;
+    line-height: 1.5;
+    display: none;
+  }
   .check-box {
     width: 18px;
     height: 18px;
@@ -1393,6 +1407,9 @@
               Training and Installation
               <span class="check-price">Rs 25,000 one-time</span>
             </div>
+            <div class="calc-addon-note" id="training-addon-note">
+              Includes: Installation and training for all your staffs (3 days training)
+            </div>
             <div class="calc-check" id="chk-academy" data-key="academy">
               <span class="check-box">✓</span>
               Academy Module
@@ -1780,6 +1797,9 @@ function calcUpdate() {
   let trainingCost = checks.training ? 25000 : 0;
   let academyCost = checks.academy ? 4500 : 0;
   let payrollCost = checks.payroll ? 3000 : 0;
+
+  const trainingAddonNote = document.getElementById('training-addon-note');
+  if(trainingAddonNote) trainingAddonNote.style.display = checks.training ? 'block' : 'none';
 
   const addonMonthlyTotal = branchCost + userCost + staffCost + waCost + emailCost + smsCost + lowstockCost + academyCost + payrollCost;
   const billingCycleMonths = { monthly: 1, yearly: 12, biennially: 24 };
